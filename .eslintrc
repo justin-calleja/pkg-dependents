@@ -1,0 +1,15 @@
+{
+  "parser": "esprima",
+  "env": {
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "rules": {
+    "no-console": 0
+  }
+}
