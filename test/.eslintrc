@@ -1,0 +1,13 @@
+{
+  "globals": {
+    "suite": false,
+    "setup": false,
+    "test": false,
+    "chai": false,
+    "sinon": false,
+    "suiteTeardown": false,
+    "suiteSetup": false,
+    "teardown": false,
+    "mochaAsync": false
+  }
+}
