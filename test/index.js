@@ -7,7 +7,29 @@ var fixturesPath = path.join(__dirname, 'fixtures');
 var dirsInFixtures = getDirectories(fixturesPath).map(dirName => path.join(fixturesPath, dirName));
 
 suite('pkg-dependents interface', function() {
-  suite('#pkgDependents() no recurse', function () {
+  suite('#pkgDependents()', function () {
+    test('expect undefined value for abc123 package since it does not exist in given paths', function (cb) {
+      pkgDependents('abc123', {
+        paths: dirsInFixtures,
+        recurse: false
+      }, (err, result) => {
+        assert.isTrue(Object.keys(result).length === 1, 'should only have one key in result');
+        assert.isUndefined(result.abc123, 'expect undefined value for abc123 package since it does not exist in given paths');
+        cb();
+      });
+    });
+
+    test('expect similar result when recurse is true (to when recurse if false) for a package which cannot be found in given paths', function (cb) {
+      pkgDependents('abc123', {
+        paths: dirsInFixtures,
+        recurse: true
+      }, (err, result) => {
+        assert.isTrue(Object.keys(result).length === 1, 'should only have one key in result');
+        assert.isUndefined(result.abc123, 'expect undefined value for abc123 package since it does not exist in given paths');
+        cb();
+      });
+    });
+
     test('check expected output with no recurse on "a" package', function (cb) {
       pkgDependents('a', {
         paths: dirsInFixtures,
@@ -38,9 +60,7 @@ suite('pkg-dependents interface', function() {
         cb();
       });
     });
-  });
 
-  suite('#pkgDependents() with recurse', function () {
     test('check expected output with recurse on "d" package', function (cb) {
       pkgDependents('d', {
         paths: dirsInFixtures,

@@ -30,6 +30,10 @@
  * @returns {IndexInfo}
  */
 function indexOne(indexInputs, pkgName) {
+  if (indexInputs[pkgName] === undefined) {
+    return undefined;
+  }
+
   var dependents = {
     dependencyDependents: [],
     peerDependencyDependents: [],
@@ -85,7 +89,11 @@ function filter(indexInfos, pkgName) {
   var pkgIndexInfo = indexInfos[pkgName];
   var tmpResult = {};
   tmpResult[pkgName] = pkgIndexInfo;
-  return _filter(tmpResult, indexInfos, pkgName)
+  if (pkgIndexInfo === undefined) {
+    return tmpResult;
+  } else {
+    return _filter(tmpResult, indexInfos, pkgName)
+  }
 }
 
 module.exports = {
