@@ -4,6 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "preversion": "npm run test",
+    "postversion": "git push origin master && git push --tags",
     "test": "node_modules/.bin/_mocha test --ui tdd"
   },
   "keywords": [],
