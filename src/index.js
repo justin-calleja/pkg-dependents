@@ -7,13 +7,13 @@ function pkgDependents(pkgName, opts, onDoneCb) {
 
   var indexInputs = pathsToIndexInputs(paths);
   if (recurse) {
-    // TODO:
+    var resultRecurse = indexOps.filter(indexOps.indexAll(indexInputs), pkgName);
+    onDoneCb(null, resultRecurse);
   } else {
-    var res = {};
-    res[pkgName] = indexOps.indexOne(indexInputs, pkgName);
-    onDoneCb(null, res);
+    var result = {};
+    result[pkgName] = indexOps.indexOne(indexInputs, pkgName);
+    onDoneCb(null, result);
   }
-
 }
 
 module.exports = pkgDependents;

@@ -65,7 +65,31 @@ function indexAll(indexInputs) {
   }, {});
 }
 
+function _filter(result, indexInfos, pkgName) {
+  var dependents = result[pkgName].dependents;
+  var indexInputElements = dependents.dependencyDependents.concat(dependents.peerDependencyDependents).concat(dependents.devDependencyDependents);
+  indexInputElements.forEach(el => {
+    result[el.pkgJSON.name] = indexInfos[el.pkgJSON.name];
+    _filter(result, indexInfos, el.pkgJSON.name);
+  });
+  return result;
+}
+
+/**
+ * Filters indexInfos to only include info on pkgName and any of its dependents recursively
+ * @param  {Object.<IndexInfo>}       indexInfos the result of indexing
+ * @param  {string} pkgName           the first thing to filter by. This changes with each new dependent found
+ * @return {Object.<IndexInfos>}      a filtered out indexInfos based on pkgName and its dependents
+ */
+function filter(indexInfos, pkgName) {
+  var pkgIndexInfo = indexInfos[pkgName];
+  var tmpResult = {};
+  tmpResult[pkgName] = pkgIndexInfo;
+  return _filter(tmpResult, indexInfos, pkgName)
+}
+
 module.exports = {
   indexOne,
-  indexAll
+  indexAll,
+  filter
 };

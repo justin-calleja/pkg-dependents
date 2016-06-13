@@ -12,6 +12,7 @@ replServer.context.getDirectories = getDirectories;
 replServer.context.pathsToIndexInputs = pathsToIndexInputs;
 replServer.context.indexOne = indexOps.indexOne;
 replServer.context.indexAll = indexOps.indexAll;
+replServer.context.filter = indexOps.filter;
 
 var fixturesPath = replServer.context.fixturesPath = path.resolve(__dirname, './fixtures');
 replServer.context.dir1 = path.join(fixturesPath, 'dir1');
