@@ -6,7 +6,7 @@
   "scripts": {
     "preversion": "npm run test",
     "postversion": "git push origin master && git push --tags",
-    "test": "node_modules/.bin/_mocha test --ui tdd"
+    "test": "node_modules/.bin/_mocha --ui tdd ./test/index.js"
   },
   "keywords": [],
   "author": "Justin Calleja <calleja.justin@gmail.com>",
