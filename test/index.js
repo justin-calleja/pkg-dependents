@@ -7,6 +7,7 @@ var fixturesPath = path.join(__dirname, 'fixtures');
 var dirsInFixtures = getDirectories(fixturesPath).map(dirName => path.join(fixturesPath, dirName));
 
 suite('pkg-dependents interface', function() {
+
   suite('#pkgDependents()', function () {
     test('expect undefined value for abc123 package since it does not exist in given paths', function (cb) {
       pkgDependents('abc123', {
@@ -86,6 +87,24 @@ suite('pkg-dependents interface', function() {
         assert.isTrue(result.b.dependents.dependencyDependents[0].pkgJSON.name === 'a', 'package b has a dependency dependent on package a');
         assert.isTrue(result.b.dependents.peerDependencyDependents.length === 0, 'package b has no peerDependency dependents');
         assert.isTrue(result.b.dependents.devDependencyDependents.length === 0, 'package b has no devDependency dependents');
+        cb();
+      });
+    });
+
+    test('if pkgName is not given, expect to get a datastructure which gives info on all '
+          + 'packages and their dependents (recurse option is ignored)', function (cb) {
+      pkgDependents(null, {
+        paths: dirsInFixtures
+      }, (err, result) => {
+        if (err) throw err;
+        assert.equal(Object.keys(result).length, 7, 'should have 7 keys in result, one for every directory in paths with a package.json');
+        assert.isFalse(result.a === undefined, 'should have dependents info on pkg a');
+        assert.isFalse(result.b === undefined, 'should have dependents info on pkg b');
+        assert.isFalse(result.c === undefined, 'should have dependents info on pkg c');
+        assert.isFalse(result.d === undefined, 'should have dependents info on pkg d');
+        assert.isFalse(result.e === undefined, 'should have dependents info on pkg e');
+        assert.isFalse(result.f === undefined, 'should have dependents info on pkg f');
+        assert.isFalse(result.g === undefined, 'should have dependents info on pkg g');
         cb();
       });
     });

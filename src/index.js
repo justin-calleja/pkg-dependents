@@ -6,7 +6,9 @@ function pkgDependents(pkgName, opts, onDoneCb) {
   var recurse = opts.recurse || false;
 
   var indexInputs = pathsToIndexInputs(paths);
-  if (recurse) {
+  if (!pkgName) {
+    onDoneCb(null, indexOps.indexAll(indexInputs));
+  } else if (recurse) {
     var resultRecurse = indexOps.filter(indexOps.indexAll(indexInputs), pkgName);
     onDoneCb(null, resultRecurse);
   } else {
