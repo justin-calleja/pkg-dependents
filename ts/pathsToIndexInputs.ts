@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import getDirectories from './getDirectories';
 
-interface AbsPathPkgJSON {
+export interface AbsPathPkgJSON {
   // the absolute path to the directory holding the package.json file
   absPath: string;
   // the parsed contents of a package.json file
@@ -15,7 +15,7 @@ interface AbsPathDirs {
 }
 
 // an Object whose keys are of type AbsPathPkgJSON
-interface AbsPathPkgJSONDict {
+export interface AbsPathPkgJSONDict {
   [el: string]: AbsPathPkgJSON
 }
 

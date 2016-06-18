@@ -1,8 +1,8 @@
 var repl = require('repl');
 var path = require('path');
-var getDirectories = require('../src/getDirectories');
-var pathsToIndexInputs = require('../src/pathsToIndexInputs');
-var indexOps = require('../src/indexOps');
+var getDirectories = require('../lib/getDirectories');
+var pathsToIndexInputs = require('../lib/pathsToIndexInputs');
+var indexOps = require('../lib/indexOps');
 
 var replServer = repl.start({
   prompt: '> '
