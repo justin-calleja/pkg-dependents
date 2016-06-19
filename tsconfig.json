@@ -1,7 +1,7 @@
 {
   "version": "1.8.10",
   "compilerOptions": {
-    "outDir": "../lib",
+    "outDir": "./lib",
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -17,18 +17,19 @@
     "suppressImplicitAnyIndexErrors": true
   },
   "filesGlob": [
-    "./**/*.ts",
-    "./**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "typings/**/*.ts",
     "!node_modules/**"
   ],
   "compileOnSave": true,
   "buildOnSave": false,
   "files": [
-    "./getDirectories.ts",
-    "./index.ts",
-    "./pathsToIndexInputs.ts",
-    "./typings/globals/node/index.d.ts",
-    "./typings/index.d.ts"
+    "src/getDirectories.ts",
+    "src/index.ts",
+    "src/pathsToIndexInputs.ts",
+    "typings/globals/node/index.d.ts",
+    "typings/index.d.ts"
   ],
   "atom": {
     "rewriteTsconfig": true
