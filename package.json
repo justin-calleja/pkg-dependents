@@ -9,7 +9,8 @@
     "prepublish": "npm run test",
     "preversion": "npm run test",
     "postversion": "git push origin master && git push --tags",
-    "test": "npm run build && mocha --ui tdd ./test/index.js"
+    "pretest": "npm run build",
+    "test": "mocha --ui tdd ./test/index.js"
   },
   "repository": {
     "type": "git",
