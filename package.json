@@ -1,6 +1,6 @@
 {
   "name": "pkg-dependents",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -13,8 +13,8 @@
     "test": "mocha --ui tdd ./test/index.js"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/justin-calleja/pkg-dependents.git"
+    "type": "git",
+    "url": "https://github.com/justin-calleja/pkg-dependents.git"
   },
   "keywords": [],
   "author": "Justin Calleja <calleja.justin@gmail.com>",
