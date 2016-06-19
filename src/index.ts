@@ -1,5 +1,6 @@
 import pathsToIndexInputs from './pathsToIndexInputs';
-import * as indexOps from './indexOps';
+import { indexAll, indexOne, filter } from './indexOps';
+import { IndexInfoDict } from './interfaces';
 
 export interface Opts {
   // the paths in which to search for dependents
@@ -8,17 +9,19 @@ export interface Opts {
   recurse: boolean;
 }
 
-export default function pkgDependents(pkgName: string, opts: Opts, cb: (err: Error, result) => void) {
+export default function pkgDependents(pkgName: string, opts: Opts, cb: (err: Error, result: IndexInfoDict) => void) {
   var paths = opts.paths || [];
   var recurse = opts.recurse || false;
 
   var indexInputs = pathsToIndexInputs(paths);
-  if (recurse) {
-    var resultRecurse = indexOps.filter(indexOps.indexAll(indexInputs), pkgName);
+  if (!pkgName) {
+    cb(null, indexAll(indexInputs));
+  } else if (recurse) {
+    var resultRecurse = filter(indexAll(indexInputs), pkgName);
     cb(null, resultRecurse);
   } else {
-    var result = {};
-    result[pkgName] = indexOps.indexOne(indexInputs, pkgName);
+    var result: IndexInfoDict = {};
+    result[pkgName] = indexOne(indexInputs, pkgName);
     cb(null, result);
   }
 }
