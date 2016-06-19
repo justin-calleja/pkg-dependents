@@ -27,6 +27,8 @@
   "files": [
     "src/getDirectories.ts",
     "src/index.ts",
+    "src/indexOps.ts",
+    "src/interfaces/index.d.ts",
     "src/pathsToIndexInputs.ts",
     "typings/globals/node/index.d.ts",
     "typings/index.d.ts"

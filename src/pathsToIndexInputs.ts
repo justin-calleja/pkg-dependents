@@ -1,23 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import getDirectories from './getDirectories';
-
-export interface AbsPathPkgJSON {
-  // the absolute path to the directory holding the package.json file
-  absPath: string;
-  // the parsed contents of a package.json file
-  pkgJSON: Object;
-}
-
-interface AbsPathDirs {
-  absPath: string;
-  dirs: string[];
-}
-
-// an Object whose keys are of type AbsPathPkgJSON
-export interface AbsPathPkgJSONDict {
-  [el: string]: AbsPathPkgJSON
-}
+import { AbsPathPkgJSON, AbsPathDirs, AbsPathPkgJSONDict } from './interfaces';
 
 /**
  * Given an array of absolute paths, each path has its directories searched for a package.json
