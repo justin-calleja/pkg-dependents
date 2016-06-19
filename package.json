@@ -12,6 +12,10 @@
     "pretest": "npm run build",
     "test": "mocha --ui tdd ./test/index.js"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/justin-calleja/pkg-dependents.git"
+  },
   "keywords": [],
   "author": "Justin Calleja <calleja.justin@gmail.com>",
   "license": "ISC",
