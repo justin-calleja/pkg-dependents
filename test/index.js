@@ -73,7 +73,7 @@ suite('pkg-dependents interface', function() {
         assert.isTrue(result.d.dependents.dependencyDependents.length === 0, 'package d has no dependency dependents');
         assert.isTrue(result.d.dependents.peerDependencyDependents.length === 1, 'package d has 1 peerDependency dependent');
         assert.isTrue(result.d.dependents.peerDependencyDependents[0].pkgJSON.name === 'a', 'package d has a peerDependency dependent on package a');
-        assert.isTrue(result.d.dependents.devDependencyDependents.length === 1, 'package a has 1 devDependency dependent');
+        assert.isTrue(result.d.dependents.devDependencyDependents.length === 1, 'package d has 1 devDependency dependent');
         assert.isTrue(result.d.dependents.devDependencyDependents[0].pkgJSON.name === 'b', 'package d has a devDependency dependent on package b');
 
         assert.isTrue(result.a.absPath.endsWith(path.join('fixtures', 'dir1', 'a')), 'should have an absPath ending in fixtures/dir1/a');
