@@ -4,9 +4,13 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "clean": "rm -rf ./lib && mkdir ./lib",
+    "build": "npm run clean && tsc -p ./tsconfig.json",
+    "prepublish": "npm run test",
     "preversion": "npm run test",
     "postversion": "git push origin master && git push --tags",
-    "test": "node_modules/.bin/_mocha --ui tdd ./test/index.js"
+    "pretest": "npm run build",
+    "test": "mocha --ui tdd ./test/index.js"
   },
   "keywords": [],
   "author": "Justin Calleja <calleja.justin@gmail.com>",
@@ -15,6 +19,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^2.12.0",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "typescript": "^1.8.10"
   }
 }
