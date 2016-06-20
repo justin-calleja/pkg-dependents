@@ -1,7 +1,9 @@
+// NOTE: repl.js depends on tsc output.
+// Make sure you've transpiled with `npm run build` before using: node ./test/repl.js
 var repl = require('repl');
 var path = require('path');
-var getDirectories = require('../lib/getDirectories');
-var pathsToIndexInputs = require('../lib/pathsToIndexInputs');
+var getDirectories = require('../lib/getDirectories').default;
+var pathsToIndexInputs = require('../lib/pathsToIndexInputs').default;
 var indexOps = require('../lib/indexOps');
 
 var replServer = repl.start({
