@@ -36,3 +36,10 @@ export interface Dependents {
   peerDependencyDependents: AbsPathPkgJSONDict;
   devDependencyDependents: AbsPathPkgJSONDict;
 }
+
+export interface Opts {
+  // the paths in which to search for dependents
+  paths?: string[];
+  // whether or not to return dependents of the dependents (of the dependents etc…) in the result
+  recurse?: boolean;
+}

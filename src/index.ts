@@ -1,13 +1,9 @@
 import pathsToIndexInputs from './pathsToIndexInputs';
 import { indexAll, indexOne, filter } from './indexOps';
-import { IndexInfoDict } from './interfaces';
+import { IndexInfoDict, Opts } from './interfaces';
 
-export interface Opts {
-  // the paths in which to search for dependents
-  paths: string[];
-  // whether or not to return dependents of the dependents (of the dependents etc…) in the result
-  recurse: boolean;
-}
+// export all types users of this package may need
+export { IndexInfoDict, IndexInfo, AbsPathPkgJSON, PkgJSON, AbsPathPkgJSONDict, Opts } from './interfaces';
 
 /**
  * Given an array of directory paths housing Node packages (projects), each package's package.json is read
