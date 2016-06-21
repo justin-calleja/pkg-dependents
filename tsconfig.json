@@ -19,19 +19,14 @@
   "filesGlob": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "typings/**/*.ts",
     "!node_modules/**"
   ],
   "compileOnSave": true,
   "buildOnSave": false,
   "files": [
-    "src/getDirectories.ts",
     "src/index.ts",
     "src/indexOps.ts",
-    "src/interfaces/index.ts",
-    "src/pathsToIndexInputs.ts",
-    "typings/globals/node/index.d.ts",
-    "typings/index.d.ts"
+    "src/interfaces/index.ts"
   ],
   "atom": {
     "rewriteTsconfig": true

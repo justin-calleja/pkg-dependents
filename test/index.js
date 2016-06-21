@@ -1,39 +1,38 @@
 var assert = require('chai').assert;
 var pkgDependents = require('../lib').default;
+var abc = require('./fixtures/abc');
 var path = require('path');
-var getDirectories = require('../lib/getDirectories').default;
 
-var fixturesPath = path.join(__dirname, 'fixtures');
-var dirsInFixtures = getDirectories(fixturesPath).map(dirName => path.join(fixturesPath, dirName));
+describe('pkg-dependents interface', function() {
 
-suite('pkg-dependents interface', function() {
-
-  suite('#pkgDependents()', function () {
-    test('expect undefined value for abc123 package since it does not exist in given paths', function (cb) {
-      pkgDependents('abc123', {
-        paths: dirsInFixtures,
+  describe('#pkgDependents()', function () {
+    it('expect undefined value for abc123 key in result since it does not exist in input', function (cb) {
+      pkgDependents(abc, {
+        pkgName: 'abc123',
         recurse: false
       }, (err, result) => {
         assert.isTrue(Object.keys(result).length === 1, 'should only have one key in result');
-        assert.isUndefined(result.abc123, 'expect undefined value for abc123 package since it does not exist in given paths');
+        assert.property(result, 'abc123', 'should have a key abc123');
+        assert.isUndefined(result.abc123, 'expect undefined value for abc123 package since it does not exist in given data structure');
         cb();
       });
     });
 
-    test('expect similar result when recurse is true (to when recurse if false) for a package which cannot be found in given paths', function (cb) {
-      pkgDependents('abc123', {
-        paths: dirsInFixtures,
+    it('expect similar result when recurse is true (to when recurse if false) for a package which cannot be found in given data structure', function (cb) {
+      pkgDependents(abc, {
+        pkgName: 'abc123',
         recurse: true
       }, (err, result) => {
         assert.isTrue(Object.keys(result).length === 1, 'should only have one key in result');
-        assert.isUndefined(result.abc123, 'expect undefined value for abc123 package since it does not exist in given paths');
+        assert.property(result, 'abc123', 'should have a key abc123');
+        assert.isUndefined(result.abc123, 'expect undefined value for abc123 package since it does not exist in given data structure');
         cb();
       });
     });
 
-    test('check expected output with no recurse on "a" package', function (cb) {
-      pkgDependents('a', {
-        paths: dirsInFixtures,
+    it('check expected output with no recurse on "a" package', function (cb) {
+      pkgDependents(abc, {
+        pkgName: 'a',
         recurse: false
       }, (err, result) => {
         if (err) throw err;
@@ -46,9 +45,9 @@ suite('pkg-dependents interface', function() {
       });
     });
 
-    test('check expected output with no recurse on "b" package', function (cb) {
-      pkgDependents('b', {
-        paths: dirsInFixtures,
+    it('check expected output with no recurse on "b" package', function (cb) {
+      pkgDependents(abc, {
+        pkgName: 'b',
         recurse: false
       }, (err, result) => {
         if (err) throw err;
@@ -62,9 +61,9 @@ suite('pkg-dependents interface', function() {
       });
     });
 
-    test('check expected output with recurse on "d" package', function (cb) {
-      pkgDependents('d', {
-        paths: dirsInFixtures,
+    it('check expected output with recurse on "d" package', function (cb) {
+      pkgDependents(abc, {
+        pkgName: 'd',
         recurse: true
       }, (err, result) => {
         if (err) throw err;
@@ -91,10 +90,10 @@ suite('pkg-dependents interface', function() {
       });
     });
 
-    test('if pkgName is not given, expect to get a datastructure which gives info on all '
+    it('if pkgName is not given, expect to get a datastructure which gives info on all '
           + 'packages and their dependents (recurse option is ignored)', function (cb) {
-      pkgDependents(null, {
-        paths: dirsInFixtures
+      pkgDependents(abc, {
+        pkgName: null
       }, (err, result) => {
         if (err) throw err;
         assert.equal(Object.keys(result).length, 7, 'should have 7 keys in result, one for every directory in paths with a package.json');

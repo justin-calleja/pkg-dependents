@@ -1,6 +1,8 @@
 {
   "globals": {
     "suite": false,
+    "describe": false,
+    "it": false,
     "setup": false,
     "test": false,
     "chai": false,

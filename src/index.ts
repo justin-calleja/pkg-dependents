@@ -1,36 +1,42 @@
-import pathsToIndexInputs from './pathsToIndexInputs';
 import { indexAll, indexOne, filter } from './indexOps';
-import { IndexInfoDict, Opts } from './interfaces';
+import { IndexInfoDict } from './interfaces';
+export { IndexInfo, IndexInfoDict, Dependents } from './interfaces';
+// pkg-json-info-dict is only used for its PkgJSONInfoDict type definition
+import { PkgJSONInfoDict } from 'pkg-json-info-dict/lib';
 
-// export all types users of this package may need
-export { IndexInfoDict, IndexInfo, AbsPathPkgJSON, PkgJSON, AbsPathPkgJSONDict, Opts } from './interfaces';
+export interface Opts {
+  pkgName?: string;
+  recurse?: boolean;
+}
 
 /**
- * Given an array of directory paths housing Node packages (projects), each package's package.json is read
- * and a data-structure (IndexInfoDict) is returned with an entry for each package and information
- * about each package and its dependents (packages which depend on it).
+ * Given a PkgJSONInfoDict data structure, returns an IndexInfoDict data structure.
+ * The returned IndexInfoDict can be truncated based on the given opts object.
+ * opts.pkgName can be left null / undefined for no filtering. If a value is given,
+ * then only the key pkgName will be present in resutling IndexInfoDict.
+ * opts.recurse can be given (default false). This only has an effect with a given pkgName (i.e. no pkgName
+ * means "everything including recurse").
+ * If opts.recurse is true and pkgName is given then returned IndexInfoDict contains an entry for pkgName as
+ * well as an entry for every pkg which depends on pkgName (i.e. pkgName dependents).
  *
- * @param  {string}        pkgName The package in which you're interested in (limits scope of contents in IndexInfoDict)
- * @param  {Opts}          opts    Contain paths: string[] of paths in which to look for Node packages. Also contains 'recurse'
- *                                 option which will, apart from data about pkgName, will also include data about pkgName's
- *                                 dependents (and their dependents etc…) in the resulting IndexInfoDict (as long as these
- *                                 dependent packages are also in given opts.paths)
- * @param  {IndexInfoDict} cb      The callback which will be given the result or error.
- * @return {void}                  No return value (use cb)
+ * @param  {PkgJSONInfoDict} pkgJSONInfoDict output of pkg-json-info-dict (or similar)
+ * @param  {Opts}            opts            opts.pkgName, opts.recurse
+ * @param  {IndexInfoDict}   cb              cb(err, result: IndexInfoDict)
+ * @return {void}
  */
-export default function pkgDependents(pkgName: string, opts: Opts, cb: (err: Error, result: IndexInfoDict) => void): void {
-  var paths = opts.paths || [];
-  var recurse = opts.recurse || false;
+ export default function pkgDependents(pkgJSONInfoDict: PkgJSONInfoDict, opts: Opts, cb: (err, result: IndexInfoDict) => void): void {
+   opts = opts || {};
+   var pkgName = opts.pkgName;
+   var recurse = opts.recurse || false;
 
-  var indexInputs = pathsToIndexInputs(paths);
   if (!pkgName) {
-    cb(null, indexAll(indexInputs));
+    cb(null, indexAll(pkgJSONInfoDict));
   } else if (recurse) {
-    var resultRecurse = filter(indexAll(indexInputs), pkgName);
+    var resultRecurse = filter(indexAll(pkgJSONInfoDict), pkgName);
     cb(null, resultRecurse);
   } else {
     var result: IndexInfoDict = {};
-    result[pkgName] = indexOne(indexInputs, pkgName);
+    result[pkgName] = indexOne(pkgJSONInfoDict, pkgName);
     cb(null, result);
   }
-}
+ }

@@ -1,6 +1,7 @@
-import { AbsPathPkgJSONDict, AbsPathPkgJSON, Dependents, IndexInfo, IndexInfoDict } from './interfaces';
+import { Dependents, IndexInfo, IndexInfoDict } from './interfaces';
+import { PkgJSONInfoDict } from 'pkg-json-info-dict/lib';
 
-export function indexOne(indexInputs: AbsPathPkgJSONDict, pkgName: string): IndexInfo {
+export function indexOne(indexInputs: PkgJSONInfoDict, pkgName: string): IndexInfo {
   if (indexInputs[pkgName] === undefined) {
     return undefined;
   }
@@ -30,7 +31,7 @@ export function indexOne(indexInputs: AbsPathPkgJSONDict, pkgName: string): Inde
   };
 }
 
-export function indexAll(indexInputs: AbsPathPkgJSONDict): IndexInfoDict {
+export function indexAll(indexInputs: PkgJSONInfoDict): IndexInfoDict {
   return Object.keys(indexInputs).reduce((acc: IndexInfoDict, indexInputsKey: string) => {
     acc[indexInputsKey] = indexOne(indexInputs, indexInputsKey);
     return acc;
