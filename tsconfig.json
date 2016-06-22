@@ -24,9 +24,7 @@
   "compileOnSave": true,
   "buildOnSave": false,
   "files": [
-    "src/index.ts",
-    "src/indexOps.ts",
-    "src/interfaces/index.ts"
+    "src/index.ts"
   ],
   "atom": {
     "rewriteTsconfig": true

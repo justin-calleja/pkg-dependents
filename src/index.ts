@@ -1,42 +1,85 @@
-import { indexAll, indexOne, filter } from './indexOps';
-import { IndexInfoDict } from './interfaces';
-export { IndexInfo, IndexInfoDict, Dependents } from './interfaces';
-// pkg-json-info-dict is only used for its PkgJSONInfoDict type definition
-import { PkgJSONInfoDict } from 'pkg-json-info-dict/lib';
+import { PkgJSONInfo, PkgJSONInfoDict } from 'pkg-json-info-dict/lib';
 
-export interface Opts {
-  pkgName?: string;
-  recurse?: boolean;
+export interface DependentsDict {
+  // key is a package name
+  [el: string]: Dependents;
+}
+export interface Dependents {
+  dependencyDependents: PkgJSONInfoDict;
+  peerDependencyDependents: PkgJSONInfoDict;
+  devDependencyDependents: PkgJSONInfoDict;
+}
+
+export function dependentsOf(pkgName: string, pkgJSONInfoDict: PkgJSONInfoDict): Dependents {
+  if (!pkgName) {
+    throw new Error('Cannot find dependensOf without a given pkgName');
+  }
+  if (pkgJSONInfoDict[pkgName] === undefined) {
+    return undefined;
+  }
+
+  var dependents: Dependents = {
+    dependencyDependents: {},
+    peerDependencyDependents: {},
+    devDependencyDependents: {}
+  };
+
+  Object.keys(pkgJSONInfoDict).forEach((key: string) => {
+    var absPath = pkgJSONInfoDict[key].absPath;
+    var pkgJSON = pkgJSONInfoDict[key].pkgJSON;
+
+    if (pkgJSON.dependencies && pkgJSON.dependencies[pkgName])
+      dependents.dependencyDependents[key] = { absPath, pkgJSON };
+    if (pkgJSON.peerDependencies && pkgJSON.peerDependencies[pkgName])
+      dependents.peerDependencyDependents[key] = { absPath, pkgJSON };
+    if (pkgJSON.devDependencies && pkgJSON.devDependencies[pkgName])
+      dependents.devDependencyDependents[key] = { absPath, pkgJSON };
+  });
+
+  return dependents;
+}
+
+export function dependentsOfDict(pkgName: string, pkgJSONInfoDict: PkgJSONInfoDict): DependentsDict {
+  var dependents = dependentsOf(pkgName, pkgJSONInfoDict);
+
+  var result: DependentsDict = {};
+  result[pkgName] = dependents;
+  return result;
+}
+
+export function allDependentsOf(pkgJSONInfoDict: PkgJSONInfoDict): DependentsDict {
+  return Object.keys(pkgJSONInfoDict).reduce((acc, key: string) => {
+    acc[key] = dependentsOf(key, pkgJSONInfoDict);
+    return acc;
+  }, <DependentsDict>{});
 }
 
 /**
- * Given a PkgJSONInfoDict data structure, returns an IndexInfoDict data structure.
- * The returned IndexInfoDict can be truncated based on the given opts object.
- * opts.pkgName can be left null / undefined for no filtering. If a value is given,
- * then only the key pkgName will be present in resutling IndexInfoDict.
- * opts.recurse can be given (default false). This only has an effect with a given pkgName (i.e. no pkgName
- * means "everything including recurse").
- * If opts.recurse is true and pkgName is given then returned IndexInfoDict contains an entry for pkgName as
- * well as an entry for every pkg which depends on pkgName (i.e. pkgName dependents).
- *
- * @param  {PkgJSONInfoDict} pkgJSONInfoDict output of pkg-json-info-dict (or similar)
- * @param  {Opts}            opts            opts.pkgName, opts.recurse
- * @param  {IndexInfoDict}   cb              cb(err, result: IndexInfoDict)
- * @return {void}
+ * Filters dependentsDict entries to only include pkgName and any of its dependents recursively
+ * (i.e. if pkgName has a dependent X, then X's dependents are left in the given dependentsDict etc...).
+ * Any dependents in dependentsDict which is not keyed by pkgName or any of it's dependents recursively is
+ * removed from dependentsDict (note: the operation does NOT mutate dependentsDict)
  */
- export default function pkgDependents(pkgJSONInfoDict: PkgJSONInfoDict, opts: Opts, cb: (err, result: IndexInfoDict) => void): void {
-   opts = opts || {};
-   var pkgName = opts.pkgName;
-   var recurse = opts.recurse || false;
-
-  if (!pkgName) {
-    cb(null, indexAll(pkgJSONInfoDict));
-  } else if (recurse) {
-    var resultRecurse = filter(indexAll(pkgJSONInfoDict), pkgName);
-    cb(null, resultRecurse);
+export function filter(pkgName: string, dependentsDict: DependentsDict): DependentsDict {
+  var dependents: Dependents = dependentsDict[pkgName];
+  var tmpResult: DependentsDict = {};
+  tmpResult[pkgName] = dependents;
+  if (dependents === undefined) {
+    return tmpResult;
   } else {
-    var result: IndexInfoDict = {};
-    result[pkgName] = indexOne(pkgJSONInfoDict, pkgName);
-    cb(null, result);
+    return _filter(pkgName, tmpResult, dependentsDict)
   }
- }
+}
+
+function _filter(pkgName: string, result: DependentsDict, dependentsDict: DependentsDict) {
+  var dependents: Dependents = result[pkgName];
+  var allDependentsKeys: string[] = Object.keys(dependents.dependencyDependents)
+    .concat(Object.keys(dependents.peerDependencyDependents))
+    .concat(Object.keys(dependents.devDependencyDependents));
+
+  allDependentsKeys.forEach((key: string) => {
+    result[key] = dependentsDict[key];
+    _filter(key, result, dependentsDict);
+  });
+  return result;
+}
