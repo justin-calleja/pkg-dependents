@@ -1,10 +1,20 @@
-// var assert = require('chai').assert;
-// var pkgDependents = require('../lib').default;
-// var abc = require('./fixtures/abc');
-// var path = require('path');
-//
-// describe('pkg-dependents interface', function() {
-//
+var assert = require('chai').assert;
+var pkgDependents = require('../lib');
+var dependents = require('./fixtures/dependents');
+
+describe('pkg-dependents', function() {
+  describe('filterDependents()', function() {
+    it('works as expected', function() {
+      var result = pkgDependents.filterDependents('b', dependents);
+
+      assert.property(result.peerDependencyDependents, 'b');
+      assert.property(result.devDependencyDependents, 'b');
+      assert.equal(result.peerDependencyDependents.b.pkgJSON.name, 'b');
+      assert.equal(result.devDependencyDependents.b.pkgJSON.name, 'b');
+    });
+  });
+});
+
 //   describe('#pkgDependents()', function () {
 //     it('expect undefined value for abc123 key in result since it does not exist in input', function (cb) {
 //       pkgDependents(abc, {
