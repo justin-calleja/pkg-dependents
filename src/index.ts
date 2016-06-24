@@ -83,35 +83,3 @@ function _filterDependentsDict(pkgName: string, result: DependentsDict, dependen
   });
   return result;
 }
-
-/**
- * Removes all (dep / devDep / peerDep) dependents which are not on pkgName in given dependents
- *
- * @param  {string}     pkgName
- * @param  {Dependents} dependents
- * @return {Dependents}
- */
-export function filterDependents(pkgName: string, dependents: Dependents): Dependents {
-  if (!pkgName) {
-    return dependents;
-  }
-  if (!dependents) {
-    return undefined;
-  }
-
-  var result = <Dependents>{};
-  result.dependencyDependents = _filterDependents(pkgName, dependents.dependencyDependents || {});
-  result.peerDependencyDependents = _filterDependents(pkgName, dependents.peerDependencyDependents || {});
-  result.devDependencyDependents = _filterDependents(pkgName, dependents.devDependencyDependents || {});
-
-  return result;
-}
-
-function _filterDependents(pkgName: string, pkgJSONInfoDict: PkgJSONInfoDict): PkgJSONInfoDict {
-  return Object.keys(pkgJSONInfoDict).reduce((acc, key) => {
-    if (key === pkgName) {
-      acc[key] = pkgJSONInfoDict[key];
-    }
-    return acc;
-  }, <PkgJSONInfoDict>{});
-}
