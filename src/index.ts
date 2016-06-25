@@ -70,7 +70,6 @@ export function filterDependentsDict(pkgName: string, dependentsDict: Dependents
     return _filterDependentsDict(pkgName, tmpResult, dependentsDict)
   }
 }
-
 function _filterDependentsDict(pkgName: string, result: DependentsDict, dependentsDict: DependentsDict) {
   var dependents: Dependents = result[pkgName];
   var allDependentsKeys: string[] = Object.keys(dependents.dependencyDependents)
@@ -82,4 +81,19 @@ function _filterDependentsDict(pkgName: string, result: DependentsDict, dependen
     _filterDependentsDict(key, result, dependentsDict);
   });
   return result;
+}
+
+export function countDependencyDependents(dependents: Dependents): number {
+  return Object.keys(dependents.dependencyDependents).length;
+}
+export function countPeerDependencyDependents(dependents: Dependents): number {
+  return Object.keys(dependents.peerDependencyDependents).length;
+}
+export function countDevDependencyDependents(dependents: Dependents): number {
+  return Object.keys(dependents.devDependencyDependents).length;
+}
+export function countDependents(dependents: Dependents): number {
+  return countDependencyDependents(dependents)
+    + countPeerDependencyDependents(dependents)
+    + countDevDependencyDependents(dependents);
 }
