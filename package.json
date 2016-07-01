@@ -20,8 +20,10 @@
   "keywords": [],
   "author": "Justin Calleja <calleja.justin@gmail.com>",
   "license": "ISC",
+  "dependencies": {
+    "pkg-json-info-dict": "~0.0.1"
+  },
   "devDependencies": {
-    "pkg-json-info-dict": "~0.0.1",
     "chai": "^3.5.0",
     "eslint": "^2.12.0",
     "mocha": "^2.5.3",

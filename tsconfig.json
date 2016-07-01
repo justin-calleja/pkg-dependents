@@ -24,6 +24,8 @@
   "compileOnSave": true,
   "buildOnSave": false,
   "files": [
+    "src/constants.ts",
+    "src/dependentsOps.ts",
     "src/index.ts"
   ],
   "atom": {

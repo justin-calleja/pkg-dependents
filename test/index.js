@@ -1,3 +1,5 @@
+require('./dependentsOpsTests');
+
 // var assert = require('chai').assert;
 // var pkgDependents = require('../lib');
 // var dependents = require('./fixtures/dependents');

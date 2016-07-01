@@ -1,5 +1,15 @@
 import { PkgJSONInfo, PkgJSONInfoDict } from 'pkg-json-info-dict/lib';
 
+import * as _dependentsOps from './dependentsOps';
+export var dependentsOps = _dependentsOps;
+
+import { D_DEPENDENT, P_DEPENDENT, DD_DEPENDENT } from './constants';
+export const constants = {
+  D_DEPENDENT,
+  P_DEPENDENT,
+  DD_DEPENDENT
+};
+
 export interface DependentsDict {
   // key is a package name
   [el: string]: Dependents;
