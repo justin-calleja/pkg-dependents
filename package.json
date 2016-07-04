@@ -21,7 +21,7 @@
   "author": "Justin Calleja <calleja.justin@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "pkg-json-info-dict": "~0.0.1"
+    "pkg-json-info-dict": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
