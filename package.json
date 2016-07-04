@@ -1,6 +1,6 @@
 {
   "name": "pkg-dependents",
-  "version": "0.0.12",
+  "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
